@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>美区电商广告复盘 · 模拟数据</title>
+<style>
+:root {
+  --surface: #fcfcfb;
+  --page: #f9f9f7;
+  --ink: #0b0b0b;
+  --secondary: #52514e;
+  --muted: #898781;
+  --grid: #e1e0d9;
+  --baseline: #c3c2b7;
+  --blue: #2a78d6;
+  --blue-dark: #184f95;
+  --blue-wash: #edf5ff;
+  --red: #d03b3b;
+  --green: #0ca30c;
+  --border: rgba(11, 11, 11, 0.10);
+}
+* { box-sizing: border-box; }
+html, body { max-width: 100%; overflow-x: hidden; }
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--ink);
+  font-family: system-ui, -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif;
+  line-height: 1.65;
+}
+main { width: 100%; max-width: 1120px; margin: 0 auto; padding: 32px 20px 64px; }
+.hero {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 30px 34px;
+  margin-bottom: 22px;
+}
+.eyebrow { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.pill {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--blue-wash);
+  color: var(--blue-dark);
+}
+.pill.data { background: #fff6e6; color: #8a5a00; }
+h1 { margin: 0 0 8px; font-size: clamp(28px, 4vw, 44px); line-height: 1.15; letter-spacing: -0.02em; }
+.subtitle { margin: 0; color: var(--secondary); max-width: 760px; }
+.meta { margin-top: 18px; color: var(--muted); font-size: 13px; }
+section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 26px 28px;
+  margin-bottom: 18px;
+  max-width: 100%;
+}
+section h2 { margin: 0 0 6px; font-size: 20px; letter-spacing: -0.01em; }
+.section-note { margin: 0 0 18px; color: var(--muted); font-size: 13px; }
+.kpis { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
+.kpi {
+  border: 1px solid var(--grid);
+  border-radius: 12px;
+  padding: 14px;
+  background: #fff;
+  min-width: 0;
+}
+.kpi-label { display: block; color: var(--muted); font-size: 12px; }
+.kpi strong { display: block; font-size: clamp(18px, 1.9vw, 25px); line-height: 1.2; margin: 6px 0 3px; font-variant-numeric: tabular-nums; white-space: nowrap; letter-spacing: -0.02em; }
+.kpi-note { display: block; color: var(--muted); font-size: 11px; }
+.findings { margin: 0; padding-left: 20px; }
+.findings li { margin: 10px 0; }
+.findings li::marker { color: var(--blue); }
+.chart-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+.chart-card { border: 1px solid var(--grid); border-radius: 12px; background: #fff; padding: 10px; }
+.chart-card img { width: 100%; height: auto; display: block; border-radius: 8px; }
+.chart-card.wide { grid-column: 1 / -1; }
+.scroll-hint { display: none; margin: 0 0 6px; color: var(--muted); font-size: 11px; }
+.table-wrap { width: 100%; max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--grid); border-radius: 12px; }
+table { width: 100%; min-width: 680px; border-collapse: collapse; font-size: 13px; white-space: nowrap; }
+th, td { padding: 10px 12px; border-bottom: 1px solid var(--grid); text-align: left; vertical-align: top; }
+th { background: #f4f8fd; color: var(--secondary); font-size: 12px; font-weight: 700; position: sticky; top: 0; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:hover { background: #fafcff; }
+.empty { color: var(--muted); margin: 0; }
+.quality { margin: 0; padding-left: 20px; color: var(--secondary); }
+.quality li { margin: 7px 0; }
+.limits { color: var(--secondary); }
+.limits li { margin: 7px 0; }
+code { background: #f2f1ed; border-radius: 5px; padding: 2px 5px; font-size: 0.92em; }
+footer { color: var(--muted); font-size: 12px; text-align: center; padding-top: 10px; }
+@media (max-width: 900px) {
+  .kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .chart-grid { grid-template-columns: 1fr; }
+  section { padding: 22px 18px; }
+  .hero { padding: 24px 20px; }
+}
+@media (max-width: 560px) {
+  .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  main { padding: 18px 12px 40px; }
+  table { font-size: 12px; }
+  th, td { padding: 8px 10px; }
+  .scroll-hint { display: block; }
+}
+</style>
+</head>
+<body>
+<main>
+  <header class="hero">
+    <div class="eyebrow">
+      <span class="pill">Python · pandas · numpy</span>
+      <span class="pill">数据清洗 → 指标 → 结论</span>
+      <span class="pill data">模拟数据，非真实店铺</span>
+    </div>
+    <h1>美区电商广告复盘</h1>
+    <p class="subtitle">把销售、广告和关键词三张日报表清洗成可复核的指标，找出该加预算的 ASIN、该止损的关键词和需要人工复核的异常。</p>
+    <div class="meta">分析周期：2026-10-01 至 2026-10-28（28 天） · 6 个 ASIN · 生成于 2026-11-10 21:53</div>
+  </header>
+
+  <section>
+    <h2>01 · 结论摘要</h2>
+    <p class="section-note">先把钱花在哪、哪里有效、哪里需要停，讲成三句话。</p>
+    <ul class="findings"><li>值得加预算：B0DEMO004，ACOS 14.2%、ROAS 7.03、CVR 11.0%，贡献了店铺广告销售额的 31.2%。建议先小步加预算 20%–30%，观察一周 ACOS 是否仍在可接受区间。</li><li>需要降预算 / 查转化：B0DEMO002，ACOS 46.1%、花费 $1,697.70、CVR 5.4%。先看搜索词和 Listing，再决定是降价、收词还是暂停。</li><li>先止损的关键词：pet hair remover，花费 $1,103.49、0 个归因订单。建议加入否词或改精准匹配；本周期共有 5 条异常/待复核记录。</li><li>最优先复核的异常：广告花费异常（B0DEMO001 / SP-Auto-Coffee，2026-10-17）。先核对广告后台与归因延迟；当天降预算，避免继续空烧。</li></ul>
+  </section>
+
+  <section>
+    <h2>02 · 核心指标</h2>
+    <p class="section-note">ACOS、ROAS、CVR、TACOS 的分母不同，分开看，避免把“广告效率”和“店铺效率”混为一谈。</p>
+    <div class="kpis"><div class="kpi"><span class="kpi-label">总销售额</span><strong>$86,121.52</strong><span class="kpi-note">销售表口径</span></div><div class="kpi"><span class="kpi-label">广告花费</span><strong>$8,830.48</strong><span class="kpi-note">广告后台口径</span></div><div class="kpi"><span class="kpi-label">ACOS</span><strong>24.0%</strong><span class="kpi-note">花费 ÷ 广告销售额</span></div><div class="kpi"><span class="kpi-label">ROAS</span><strong>4.16</strong><span class="kpi-note">广告销售额 ÷ 花费</span></div><div class="kpi"><span class="kpi-label">CVR</span><strong>8.2%</strong><span class="kpi-note">订单 ÷ 会话</span></div><div class="kpi"><span class="kpi-label">TACOS</span><strong>10.3%</strong><span class="kpi-note">花费 ÷ 总销售额</span></div></div>
+  </section>
+
+  <section>
+    <h2>03 · ASIN 表现</h2>
+    <p class="section-note">销售额为总销售额；ACOS 的分母是广告归因销售额。建议由规则生成，仅作分析起点。</p>
+    <p class="scroll-hint">表格列较多，可左右滑动查看 →</p><div class="table-wrap"><table><thead><tr><th>ASIN</th><th class="num">销售额</th><th class="num">广告花费</th><th class="num">ACOS</th><th class="num">ROAS</th><th class="num">CVR</th><th class="num">销售占比</th><th>建议</th></tr></thead><tbody><tr><td>B0DEMO001</td><td class="num">$28,199.15</td><td class="num">$2,461.80</td><td class="num">20.1%</td><td class="num">4.97</td><td class="num">9.6%</td><td class="num">32.7%</td><td>维持观察</td></tr><tr><td>B0DEMO004</td><td class="num">$26,735.28</td><td class="num">$1,631.64</td><td class="num">14.2%</td><td class="num">7.03</td><td class="num">11.0%</td><td class="num">31.0%</td><td>加预算</td></tr><tr><td>B0DEMO005</td><td class="num">$10,148.00</td><td class="num">$1,006.03</td><td class="num">24.2%</td><td class="num">4.12</td><td class="num">6.1%</td><td class="num">11.8%</td><td>维持观察</td></tr><tr><td>B0DEMO002</td><td class="num">$8,868.33</td><td class="num">$1,697.70</td><td class="num">46.1%</td><td class="num">2.17</td><td class="num">5.4%</td><td class="num">10.3%</td><td>降预算，查 Listing</td></tr><tr><td>B0DEMO003</td><td class="num">$7,312.50</td><td class="num">$1,390.40</td><td class="num">44.1%</td><td class="num">2.27</td><td class="num">4.4%</td><td class="num">8.5%</td><td>降预算，查 Listing</td></tr><tr><td>B0DEMO006</td><td class="num">$4,858.26</td><td class="num">$642.91</td><td class="num">31.1%</td><td class="num">3.21</td><td class="num">8.5%</td><td class="num">5.6%</td><td>维持观察</td></tr></tbody></table></div>
+    <div class="chart-grid" style="margin-top:16px">
+      <div class="chart-card"><a href="charts/acos_by_asin.png" target="_blank" rel="noopener"><img src="charts/acos_by_asin.png" alt="各 ASIN 的 ACOS 条形图" loading="lazy"></a></div>
+      <div class="chart-card"><a href="charts/spend_vs_sales.png" target="_blank" rel="noopener"><img src="charts/spend_vs_sales.png" alt="广告花费与总销售额散点图" loading="lazy"></a></div>
+      <div class="chart-card wide"><a href="charts/weekly_trend.png" target="_blank" rel="noopener"><img src="charts/weekly_trend.png" alt="周 CVR 与 ACOS 趋势图" loading="lazy"></a></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>04 · 广告活动</h2>
+    <p class="section-note">按花费从高到低排序，先看花得最多的活动是否也在贡献销售额。</p>
+    <p class="scroll-hint">表格列较多，可左右滑动查看 →</p><div class="table-wrap"><table><thead><tr><th>广告活动</th><th>ASIN</th><th class="num">花费</th><th class="num">广告销售额</th><th class="num">ACOS</th><th class="num">CTR</th><th class="num">CPC</th><th class="num">花费占比</th></tr></thead><tbody><tr><td>SP-Auto-Coffee</td><td>B0DEMO001</td><td class="num">$2,461.80</td><td class="num">$12,241.29</td><td class="num">20.1%</td><td class="num">5.5%</td><td class="num">$0.58</td><td class="num">27.9%</td></tr><tr><td>SP-Auto-Pet</td><td>B0DEMO002</td><td class="num">$1,697.70</td><td class="num">$3,684.06</td><td class="num">46.1%</td><td class="num">6.1%</td><td class="num">$0.55</td><td class="num">19.2%</td></tr><tr><td>SBV-Silicone</td><td>B0DEMO004</td><td class="num">$1,631.64</td><td class="num">$11,464.83</td><td class="num">14.2%</td><td class="num">4.6%</td><td class="num">$0.30</td><td class="num">18.5%</td></tr><tr><td>SP-Manual-Camping</td><td>B0DEMO003</td><td class="num">$1,390.40</td><td class="num">$3,152.50</td><td class="num">44.1%</td><td class="num">6.9%</td><td class="num">$0.75</td><td class="num">15.7%</td></tr><tr><td>SP-Auto-Yoga</td><td>B0DEMO005</td><td class="num">$1,006.03</td><td class="num">$4,149.50</td><td class="num">24.2%</td><td class="num">5.9%</td><td class="num">$0.38</td><td class="num">11.4%</td></tr><tr><td>SP-Auto-Stand</td><td>B0DEMO006</td><td class="num">$642.91</td><td class="num">$2,065.41</td><td class="num">31.1%</td><td class="num">6.6%</td><td class="num">$0.41</td><td class="num">7.3%</td></tr></tbody></table></div>
+  </section>
+
+  <section>
+    <h2>05 · 关键词动作</h2>
+    <p class="section-note">“加入否词”的筛选条件是花费 ≥ $30 且归因订单为 0；落地前还要看搜索词和归因延迟。</p>
+    <p class="scroll-hint">表格列较多，可左右滑动查看 →</p><div class="table-wrap"><table><thead><tr><th>关键词</th><th>广告活动</th><th class="num">花费</th><th class="num">订单</th><th class="num">ACOS</th><th class="num">广告 CVR</th><th>动作</th></tr></thead><tbody><tr><td>coffee filter cup</td><td>SP-Auto-Coffee</td><td class="num">$1,402.19</td><td class="num">268</td><td class="num">19.9%</td><td class="num">11.0%</td><td>加预算</td></tr><tr><td>portable coffee maker</td><td>SP-Auto-Coffee</td><td class="num">$1,120.32</td><td class="num">225</td><td class="num">19.4%</td><td class="num">11.3%</td><td>加预算</td></tr><tr><td>pet hair remover</td><td>SP-Auto-Pet</td><td class="num">$1,103.49</td><td class="num">0</td><td class="num">—</td><td class="num">0.0%</td><td>加入否词</td></tr><tr><td>silicone storage bag</td><td>SBV-Silicone</td><td class="num">$897.40</td><td class="num">396</td><td class="num">14.2%</td><td class="num">13.3%</td><td>加预算</td></tr><tr><td>led camping light</td><td>SP-Manual-Camping</td><td class="num">$748.96</td><td class="num">43</td><td class="num">57.6%</td><td class="num">4.1%</td><td>降价 / 收词</td></tr><tr><td>reusable food bag</td><td>SBV-Silicone</td><td class="num">$734.24</td><td class="num">321</td><td class="num">14.2%</td><td class="num">13.2%</td><td>加预算</td></tr><tr><td>yoga stretching strap</td><td>SP-Auto-Yoga</td><td class="num">$626.22</td><td class="num">81</td><td class="num">36.2%</td><td class="num">4.9%</td><td>继续观察</td></tr><tr><td>camping lantern rechargeable</td><td>SP-Manual-Camping</td><td class="num">$612.77</td><td class="num">57</td><td class="num">31.4%</td><td class="num">6.6%</td><td>继续观察</td></tr><tr><td>pet brush for shedding</td><td>SP-Auto-Pet</td><td class="num">$594.21</td><td class="num">194</td><td class="num">16.1%</td><td class="num">17.9%</td><td>加预算</td></tr><tr><td>stretch strap for flexibility</td><td>SP-Auto-Yoga</td><td class="num">$417.44</td><td class="num">120</td><td class="num">16.1%</td><td class="num">10.9%</td><td>加预算</td></tr></tbody></table></div>
+  </section>
+
+  <section>
+    <h2>06 · 周趋势</h2>
+    <p class="section-note">按自然周汇总，观察 CVR 和 ACOS 是否出现结构性变化，而不是被单日波动带偏。</p>
+    <p class="scroll-hint">表格列较多，可左右滑动查看 →</p><div class="table-wrap"><table><thead><tr><th>周起始</th><th class="num">总销售额</th><th class="num">广告花费</th><th class="num">CVR</th><th class="num">ACOS</th><th class="num">ROAS</th></tr></thead><tbody><tr><td>2026-09-28</td><td class="num">$13,178.54</td><td class="num">$1,333.37</td><td class="num">8.4%</td><td class="num">23.5%</td><td class="num">4.25</td></tr><tr><td>2026-10-05</td><td class="num">$19,669.60</td><td class="num">$1,951.48</td><td class="num">8.4%</td><td class="num">22.6%</td><td class="num">4.43</td></tr><tr><td>2026-10-12</td><td class="num">$23,151.83</td><td class="num">$2,416.85</td><td class="num">8.4%</td><td class="num">25.7%</td><td class="num">3.89</td></tr><tr><td>2026-10-19</td><td class="num">$21,588.56</td><td class="num">$2,204.96</td><td class="num">8.0%</td><td class="num">23.6%</td><td class="num">4.23</td></tr><tr><td>2026-10-26</td><td class="num">$8,532.99</td><td class="num">$923.82</td><td class="num">7.7%</td><td class="num">24.9%</td><td class="num">4.01</td></tr></tbody></table></div>
+  </section>
+
+  <section>
+    <h2>07 · 异常与待复核</h2>
+    <p class="section-note">异常只代表“值得查”，不等于“已经确认原因”。</p>
+    <p class="scroll-hint">表格列较多，可左右滑动查看 →</p><div class="table-wrap"><table><thead><tr><th>类型</th><th>对象</th><th>日期/周期</th><th>指标</th><th>说明</th><th>建议</th></tr></thead><tbody><tr><td>广告花费异常</td><td>B0DEMO001 / SP-Auto-Coffee</td><td>2026-10-17</td><td>花费 $276.80，订单 0</td><td>单日花费为同 ASIN 中位数的 3.3 倍，但没有归因订单</td><td>先核对广告后台与归因延迟；当天降预算，避免继续空烧</td></tr><tr><td>ASIN ACOS 偏高</td><td>B0DEMO002</td><td>本周期 28 天</td><td>ACOS 46.1%，花费 $1,697.70</td><td>CVR 5.4%，广告销售额 $3,684.06</td><td>降预算并检查关键词、价格、评分和 Listing 转化</td></tr><tr><td>ASIN ACOS 偏高</td><td>B0DEMO003</td><td>本周期 28 天</td><td>ACOS 44.1%，花费 $1,390.40</td><td>CVR 4.4%，广告销售额 $3,152.50</td><td>降预算并检查关键词、价格、评分和 Listing 转化</td></tr><tr><td>CVR 环比下滑</td><td>B0DEMO002</td><td>2026-10-19 起的一周</td><td>5.3% → 3.6%</td><td>周 CVR 环比变化 -32%</td><td>排查库存、价格、差评、配送时效和广告流量结构</td></tr><tr><td>关键词浪费</td><td>pet hair remover</td><td>本周期 28 天</td><td>花费 $1,103.49，订单 0</td><td>广告活动：SP-Auto-Pet，点击 2017 次</td><td>加入否词或转为精准匹配，先止损再测试</td></tr></tbody></table></div>
+  </section>
+
+  <section>
+    <h2>08 · 数据质量</h2>
+    <p class="section-note">原始数据：销售 169 行、广告 169 行、关键词 337 行；清洗后分别保留 166、165、336 行。</p>
+    <p class="scroll-hint">表格列较多，可左右滑动查看 →</p><div class="table-wrap"><table><thead><tr><th>数据表</th><th>问题</th><th class="num">行数</th><th>处理</th></tr></thead><tbody><tr><td>销售日报</td><td>销量 / 销售额 / 会话数为负</td><td class="num">1</td><td>删除该行</td></tr><tr><td>销售日报</td><td>同日期 + ASIN 重复</td><td class="num">2</td><td>保留最后一条</td></tr><tr><td>销售日报</td><td>会话数缺失</td><td class="num">1</td><td>按 ASIN 中位数填补</td></tr><tr><td>销售日报</td><td>销售额缺失</td><td class="num">1</td><td>按 0 填补</td></tr><tr><td>广告日报</td><td>关键指标缺失</td><td class="num">1</td><td>删除该行</td></tr><tr><td>广告日报</td><td>点击数大于曝光数</td><td class="num">1</td><td>删除该行</td></tr><tr><td>广告日报</td><td>销售表中不存在的 ASIN</td><td class="num">1</td><td>从广告分析中剔除</td></tr><tr><td>广告日报</td><td>同日期 + ASIN + 活动重复</td><td class="num">1</td><td>保留最后一条</td></tr><tr><td>关键词日报</td><td>归因订单缺失</td><td class="num">1</td><td>按 0 填补</td></tr><tr><td>关键词日报</td><td>同日期 + 活动 + 关键词重复</td><td class="num">1</td><td>保留最后一条</td></tr></tbody></table></div>
+    <ul class="quality">
+      <li>日期兼容 <code>2026-10-01</code> / <code>2026/10/12</code>；ASIN 去空格并转大写。</li>
+      <li>同日同 ASIN 重复保留最后一条；<code>$1,234.50</code>、千分位、括号负数统一转数值。</li>
+      <li>负数、点击大于曝光、关键指标缺失：剔除并记录；会话缺失按 ASIN 中位数填补。</li>
+      <li>广告表中销售表不存在的 ASIN：从广告分析中剔除，避免污染 ASIN 汇总。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>09 · 口径与限制</h2>
+    <ul class="limits">
+      <li>数据是 <strong>28 天模拟数据</strong>，没有真实平台 API、真实广告后台或真实财务口径。</li>
+      <li>总销售额来自销售表，广告销售额来自广告归因，两者天然存在归因差异。</li>
+      <li>ACOS 高不一定立刻停投；新品、清库存、卡位等阶段可能有不同目标。</li>
+      <li>关键词“零订单”可能受归因延迟影响，落地前需回看 7–14 天。</li>
+      <li>本报告是分析练习，不构成真实经营建议。</li>
+    </ul>
+  </section>
+
+  <footer>由 Python 脚本生成 · 数据全部为模拟 · 可复现：<code>python scripts/generate_sample_data.py</code> + <code>python run.py</code></footer>
+</main>
+</body>
+</html>
