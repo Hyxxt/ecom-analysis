@@ -151,7 +151,7 @@ python -m pytest -q
 
 ```powershell
 python -m pytest -q
-# 8 passed
+# 9 passed
 ```
 
 覆盖：
@@ -161,6 +161,7 @@ python -m pytest -q
 - 点击大于曝光、未知 ASIN 剔除
 - 整体指标与 ASIN 汇总
 - 关键词零订单动作
+- 空关键词表仍返回 `action` 列（兼容 pandas 2.x）
 - 花费尖峰异常识别
 - 标量分母的安全除法
 
