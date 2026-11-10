@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run tests
+        run: python -m pytest -q
+
+      - name: Generate sample data and run the full pipeline
+        run: |
+          python scripts/generate_sample_data.py
+          python run.py
+
+      - name: Check generated artifacts
+        run: |
+          test -f reports/report.md
+          test -f reports/report.html
+          test -f reports/summary.xlsx
+          test -f reports/charts/acos_by_asin.png
+          test -f reports/charts/spend_vs_sales.png
+          test -f reports/charts/weekly_trend.png
