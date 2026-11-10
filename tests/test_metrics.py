@@ -192,3 +192,22 @@ def test_safe_divide_series_accepts_scalar_denominator():
     result = safe_divide_series(pd.Series([10.0, 0.0]), 10.0)
     assert result.tolist() == [1.0, 0.0]
     assert safe_divide_series(pd.Series([10.0]), 0.0).isna().all()
+
+
+def test_empty_keyword_summary_keeps_action_column():
+    empty = pd.DataFrame(
+        columns=[
+            "keyword",
+            "campaign",
+            "match_type",
+            "impressions",
+            "clicks",
+            "spend",
+            "attributed_sales",
+            "attributed_orders",
+        ]
+    )
+    result = keyword_summary(empty)
+
+    assert result.empty
+    assert "action" in result.columns

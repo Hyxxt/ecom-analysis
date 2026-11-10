@@ -117,7 +117,11 @@ def asin_summary(sales: pd.DataFrame, ads: pd.DataFrame) -> pd.DataFrame:
     out["roas"] = safe_divide_series(out["ad_sales"], out["spend"])
     out["sales_share"] = safe_divide_series(out["sales"], out["sales"].sum())
     out["spend_share"] = safe_divide_series(out["spend"], out["spend"].sum())
-    out["advice"] = out.apply(_asin_advice, axis=1)
+    if out.empty:
+        # pandas 2.x 对空表 apply 会返回 DataFrame，不能直接赋给单列
+        out["advice"] = pd.Series(dtype="object")
+    else:
+        out["advice"] = out.apply(_asin_advice, axis=1)
 
     return out.sort_values(["sales", "asin"], ascending=[False, True]).reset_index(drop=True)
 
@@ -172,7 +176,10 @@ def keyword_summary(keywords: pd.DataFrame) -> pd.DataFrame:
     out["ad_cvr"] = safe_divide_series(out["ad_orders"], out["clicks"])
     out["acos"] = safe_divide_series(out["spend"], out["ad_sales"])
     out["roas"] = safe_divide_series(out["ad_sales"], out["spend"])
-    out["action"] = out.apply(_keyword_action, axis=1)
+    if out.empty:
+        out["action"] = pd.Series(dtype="object")
+    else:
+        out["action"] = out.apply(_keyword_action, axis=1)
     return out.sort_values(["spend", "keyword"], ascending=[False, True]).reset_index(drop=True)
 
 
